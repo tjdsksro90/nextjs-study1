@@ -6,13 +6,7 @@ export default function Home() {
       <h1>Home</h1>
       <ul>
         <li>
-          <Link href="/">home</Link>
-        </li>
-        <li>
-          <Link href="/portfolio">portfolio</Link>
-        </li>
-        <li>
-          <Link href="/clients">clients</Link>
+          <Link href="/">Home</Link>
         </li>
       </ul>
     </div>
