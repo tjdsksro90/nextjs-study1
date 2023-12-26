@@ -3,6 +3,7 @@ import ResultsTitle from "@/components/events/results-title";
 import Button from "@/components/ui/button";
 import ErrorAlert from "@/components/ui/error-alert";
 import { getFilteredEvents } from "@/helpers/api-util";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import useSWR from "swr";
@@ -32,11 +33,21 @@ export default function EventsFilterPage(props) {
     }
   }, [data]);
 
+  let pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta name="description" content={`A list of filtered events`} />
+    </Head>
+  );
+
   if (!loadedEvents) {
     return (
-      <ErrorAlert>
-        <p className="center">Loading...</p>
-      </ErrorAlert>
+      <Fragment>
+        {pageHeadData}
+        <ErrorAlert>
+          <p className="center">Loading...</p>
+        </ErrorAlert>
+      </Fragment>
     );
   }
 
@@ -45,6 +56,16 @@ export default function EventsFilterPage(props) {
 
   const numYear = +filteredYear;
   const numMonth = +filteredMonth;
+
+  pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${numMonth}/${numYear}.`}
+      />
+    </Head>
+  );
 
   if (
     isNaN(numYear) ||
@@ -57,6 +78,7 @@ export default function EventsFilterPage(props) {
   ) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>Invalid filter. Please adjust your values!</p>
         </ErrorAlert>
@@ -78,6 +100,7 @@ export default function EventsFilterPage(props) {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
@@ -92,6 +115,7 @@ export default function EventsFilterPage(props) {
 
   return (
     <Fragment>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </Fragment>
